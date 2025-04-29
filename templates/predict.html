@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-6 text-center text-blue-700">Lung Cancer Stage Prediction</h1>
+
+<form method="POST" action="{{ url_for('predict') }}" class="max-w-4xl mx-auto bg-white p-6 rounded shadow-md space-y-6">
+    {% for feature in features %}
+        <div>
+            <label for="{{ feature }}" class="block font-medium text-gray-700 mb-1">{{ feature.replace('_', ' ') }}</label>
+            {% if feature.startswith('Comorbidity') or feature == 'Family_History' or feature == 'Performance_Status' %}
+                <div class="flex space-x-4">
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="{{ feature }}" value="Yes" required
+                        {% if input_data and input_data.get(feature) == 'Yes' %} checked {% endif %} class="form-radio text-blue-600" />
+                        <span class="ml-2">Yes</span>
+                    </label>
+                    <label class="inline-flex items-center">
+                        <input type="radio" name="{{ feature }}" value="No" required
+                        {% if input_data and input_data.get(feature) == 'No' %} checked {% endif %} class="form-radio text-blue-600" />
+                        <span class="ml-2">No</span>
+                    </label>
+                </div>
+            {% elif feature in ['Gender', 'Smoking_History', 'Tumor_Location', 'Stage', 'Treatment', 'Ethnicity', 'Insurance_Type'] %}
+                <select name="{{ feature }}" id="{{ feature }}" required
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <option value="" disabled {% if not input_data %}selected{% endif %}>Select {{ feature.replace('_', ' ') }}</option>
+                    {% for option in categorical_options[feature] %}
+                        <option value="{{ option }}" {% if input_data and input_data.get(feature) == option|string %}selected{% endif %}>{{ option }}</option>
+                    {% endfor %}
+                </select>
+            {% elif feature in ['Age', 'Survival_Months'] or feature in numerical_ranges %}
+                <div class="flex items-center space-x-4">
+                    <input type="range" name="{{ feature }}" id="{{ feature }}" min="{{ numerical_ranges[feature]['min'] }}" max="{{ numerical_ranges[feature]['max'] }}" step="any" required
+                    value="{{ input_data.get(feature) if input_data else numerical_ranges[feature]['min'] }}"
+                    class="flex-grow" oninput="document.getElementById('{{ feature }}_value').textContent = this.value" />
+                    <span id="{{ feature }}_value" class="w-16 text-right font-mono">{{ input_data.get(feature) if input_data else numerical_ranges[feature]['min'] }}</span>
+                </div>
+                <div class="text-xs text-gray-500">Min: {{ numerical_ranges[feature]['min'] }}, Max: {{ numerical_ranges[feature]['max'] }}</div>
+            {% else %}
+                <input type="number" step="any" name="{{ feature }}" id="{{ feature }}" required
+                value="{{ input_data.get(feature) if input_data else '' }}"
+                class="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+            {% endif %}
+        </div>
+    {% endfor %}
+
+    <div class="text-center">
+        <button type="submit" class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Predict Stage</button>
+    </div>
+</form>
+
+{% if prediction %}
+<div class="max-w-4xl mx-auto mt-8 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+    <strong class="font-bold">Predicted Cancer Stage: </strong>
+    <span class="block sm:inline">{{ prediction }}</span>
+</div>
+{% endif %}
+{% endblock %}
