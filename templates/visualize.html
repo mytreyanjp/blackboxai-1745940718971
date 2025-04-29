@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="text-2xl font-semibold mb-6 text-center text-blue-700">Data Visualizations</h1>
+
+<div class="max-w-4xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-6">
+    <a href="{{ url_for('visualize_plot', plot_name='hist_age') }}" target="_blank" class="block bg-white p-4 rounded shadow hover:shadow-lg transition text-center">
+        <i class="fas fa-chart-bar fa-3x text-blue-600 mb-2"></i>
+        <h2 class="text-lg font-semibold">Age Distribution</h2>
+    </a>
+    <a href="{{ url_for('visualize_plot', plot_name='box_tumor_size') }}" target="_blank" class="block bg-white p-4 rounded shadow hover:shadow-lg transition text-center">
+        <i class="fas fa-box fa-3x text-blue-600 mb-2"></i>
+        <h2 class="text-lg font-semibold">Tumor Size by Stage</h2>
+    </a>
+    <a href="{{ url_for('visualize_plot', plot_name='3d_scatter') }}" target="_blank" class="block bg-white p-4 rounded shadow hover:shadow-lg transition text-center">
+        <i class="fas fa-cube fa-3x text-blue-600 mb-2"></i>
+        <h2 class="text-lg font-semibold">3D Scatter Plot</h2>
+    </a>
+    <a href="{{ url_for('visualize_plot', plot_name='correlation_heatmap') }}" target="_blank" class="block bg-white p-4 rounded shadow hover:shadow-lg transition text-center">
+        <i class="fas fa-th fa-3x text-blue-600 mb-2"></i>
+        <h2 class="text-lg font-semibold">Correlation Heatmap</h2>
+    </a>
+    <a href="{{ url_for('visualize_plot', plot_name='pairplot') }}" target="_blank" class="block bg-white p-4 rounded shadow hover:shadow-lg transition text-center">
+        <i class="fas fa-project-diagram fa-3x text-blue-600 mb-2"></i>
+        <h2 class="text-lg font-semibold">Pairplot</h2>
+    </a>
+    <a href="{{ url_for('visualize_plot', plot_name='violin_survival_stage') }}" target="_blank" class="block bg-white p-4 rounded shadow hover:shadow-lg transition text-center">
+        <i class="fas fa-violin fa-3x text-blue-600 mb-2"></i>
+        <h2 class="text-lg font-semibold">Survival Months by Stage</h2>
+    </a>
+    <a href="{{ url_for('visualize_plot', plot_name='count_gender') }}" target="_blank" class="block bg-white p-4 rounded shadow hover:shadow-lg transition text-center">
+        <i class="fas fa-male fa-3x text-blue-600 mb-2"></i>
+        <h2 class="text-lg font-semibold">Count by Gender</h2>
+    </a>
+    <a href="{{ url_for('visualize_plot', plot_name='count_smoking') }}" target="_blank" class="block bg-white p-4 rounded shadow hover:shadow-lg transition text-center">
+        <i class="fas fa-smoking fa-3x text-blue-600 mb-2"></i>
+        <h2 class="text-lg font-semibold">Count by Smoking History</h2>
+    </a>
+    <a href="{{ url_for('visualize_plot', plot_name='3d_scatter_alt') }}" target="_blank" class="block bg-white p-4 rounded shadow hover:shadow-lg transition text-center">
+        <i class="fas fa-cube fa-3x text-blue-600 mb-2"></i>
+        <h2 class="text-lg font-semibold">3D Scatter Plot (BP and Hemoglobin)</h2>
+    </a>
+</div>
+{% endblock %}
